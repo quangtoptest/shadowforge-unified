@@ -2,7 +2,7 @@ services:
   - type: web
     name: shadowforge-unified
     runtime: node
-    region: singapore
+    region: oregon
     plan: free
     buildCommand: npm install
     startCommand: npm start
