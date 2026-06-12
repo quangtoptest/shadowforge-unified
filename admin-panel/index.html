@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShadowForge - License Admin</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --surface2: #1a1a25;
+      --surface3: #222233;
+      --border: #2a2a3a;
+      --text: #e0e0f0;
+      --text2: #8888aa;
+      --accent: #a855f7;
+      --accent2: #06b6d4;
+      --accent-glow: rgba(168, 85, 247, 0.3);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.3);
+      --success: #22c55e;
+      --success-glow: rgba(34, 197, 94, 0.3);
+      --warning: #eab308;
+      --warning-glow: rgba(234, 179, 8, 0.3);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 100%, rgba(6, 182, 212, 0.06) 0%, transparent 60%);
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+    /* ── Login ── */
+    .login-overlay {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      background: var(--bg); z-index: 100;
+      background-image:
+        radial-gradient(circle at 50% 40%, rgba(168, 85, 247, 0.12) 0%, transparent 70%),
+        radial-gradient(circle at 30% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 50%);
+    }
+    .login-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 48px; width: 420px; text-align: center;
+      box-shadow: 0 0 60px rgba(168, 85, 247, 0.1);
+    }
+    .login-box .logo-text {
+      font-size: 32px; font-weight: 800; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px;
+    }
+    .login-box .subtitle { color: var(--text2); font-size: 14px; margin-bottom: 32px; }
+    .login-box input {
+      width: 100%; padding: 14px 18px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); font-size: 15px; margin-bottom: 12px;
+      outline: none; font-family: 'Inter', sans-serif; transition: var(--transition);
+    }
+    .login-box input:focus { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+    .login-box .login-btn {
+      width: 100%; padding: 14px; background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none; border-radius: var(--radius-sm); color: white; font-size: 16px; font-weight: 600;
+      cursor: pointer; margin-top: 8px; transition: var(--transition); font-family: 'Inter', sans-serif;
+    }
+    .login-box .login-btn:hover { box-shadow: 0 0 30px var(--accent-glow); transform: translateY(-1px); }
+    .login-error { color: var(--danger); font-size: 13px; margin-top: 12px; display: none; }
+
+    /* ── Header ── */
+    .header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;
+      padding-bottom: 20px; border-bottom: 1px solid var(--border);
+    }
+    .header .brand { display: flex; align-items: center; gap: 14px; }
+    .header .brand h1 {
+      font-size: 26px; font-weight: 700; letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .header .brand .version { color: var(--text2); font-size: 12px; margin-top: 2px; }
+    .logout-btn {
+      padding: 10px 22px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text2); cursor: pointer; font-size: 13px;
+      transition: var(--transition); font-family: 'Inter', sans-serif;
+    }
+    .logout-btn:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* ── Stats Cards ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; transition: var(--transition);
+    }
+    .stat-card:hover { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-glow); }
+    .stat-card .stat-label { color: var(--text2); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+    .stat-card .stat-value { font-size: 32px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .stat-card.purple .stat-value { color: var(--accent); }
+    .stat-card.cyan .stat-value { color: var(--accent2); }
+    .stat-card.green .stat-value { color: var(--success); }
+    .stat-card.red .stat-value { color: var(--danger); }
+
+    /* ── Controls ── */
+    .controls { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      padding: 10px 22px; border-radius: var(--radius-sm); border: none; font-weight: 500;
+      cursor: pointer; font-size: 14px; transition: var(--transition); font-family: 'Inter', sans-serif;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
+    .btn-primary:hover { box-shadow: 0 0 25px var(--accent-glow); transform: translateY(-1px); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--accent); }
+    .btn-danger { background: transparent; border: 1px solid var(--danger); color: var(--danger); }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.1); box-shadow: 0 0 20px var(--danger-glow); }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+    .search-input {
+      padding: 10px 18px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); font-size: 14px; outline: none;
+      min-width: 250px; font-family: 'Inter', sans-serif; transition: var(--transition);
+    }
+    .search-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+
+    /* ── Table ── */
+    .table-container {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 14px 18px; font-size: 11px; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--text2); background: var(--surface2); border-bottom: 1px solid var(--border);
+    }
+    td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 13px; }
+    tr:last-child td { border-bottom: none; }
+    tr { transition: var(--transition); }
+    tbody tr:hover { background: var(--surface2); }
+    .key-text { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent2); }
+    .badge {
+      display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+    }
+    .badge-active { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+    .badge-inactive { background: rgba(136, 136, 170, 0.15); color: var(--text2); }
+    .badge-banned { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    .badge-expired { background: rgba(234, 179, 8, 0.15); color: var(--warning); }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.7); z-index: 200; backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 36px; width: 480px; max-width: 90vw;
+      box-shadow: 0 0 60px rgba(168, 85, 247, 0.2);
+    }
+    .modal h2 { font-size: 22px; margin-bottom: 24px; }
+    .modal label { display: block; color: var(--text2); font-size: 12px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+    .modal input, .modal select {
+      width: 100%; padding: 12px 16px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); font-size: 14px; margin-bottom: 16px;
+      outline: none; font-family: 'Inter', sans-serif; transition: var(--transition);
+    }
+    .modal input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px; padding: 14px 24px; border-radius: var(--radius-sm);
+      color: white; font-size: 14px; font-weight: 500; z-index: 300; opacity: 0; transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast-success { background: var(--success); }
+    .toast-error { background: var(--danger); }
+
+    /* ── Pagination ── */
+    .pagination { display: flex; justify-content: center; gap: 8px; padding: 20px; }
+    .pagination button {
+      padding: 8px 14px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); color: var(--text); cursor: pointer; font-size: 13px;
+      transition: var(--transition); font-family: 'Inter', sans-serif;
+    }
+    .pagination button:hover:not(:disabled) { border-color: var(--accent); }
+    .pagination button.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .hidden { display: none !important; }
+    .empty-state { text-align: center; padding: 60px; color: var(--text2); }
+    .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+<!-- Login -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="logo-text">ShadowForge</div>
+    <div class="subtitle">License Management Panel</div>
+    <input type="text" id="username" placeholder="Username" autocomplete="off">
+    <input type="password" id="password" placeholder="Password" autocomplete="off">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- Main App -->
+<div id="app" class="hidden">
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <h1>ShadowForge</h1>
+        <div>
+          <div class="version">License Management v1.0</div>
+        </div>
+      </div>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card purple"><div class="stat-label">Total Keys</div><div class="stat-value" id="statTotal">-</div></div>
+      <div class="stat-card cyan"><div class="stat-label">Active Keys</div><div class="stat-value" id="statActive">-</div></div>
+      <div class="stat-card green"><div class="stat-label">Activations</div><div class="stat-value" id="statActivations">-</div></div>
+      <div class="stat-card red"><div class="stat-label">Banned</div><div class="stat-value" id="statBanned">-</div></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <button class="btn btn-primary" onclick="openGenModal()">+ Generate Keys</button>
+      <input type="text" class="search-input" placeholder="Search keys, customers..." id="searchInput" oninput="loadKeys()">
+    </div>
+
+    <!-- Keys Table -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>License Key</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Activations</th>
+            <th>Expires</th>
+            <th>Created</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="keysTableBody">
+        </tbody>
+      </table>
+      <div class="empty-state hidden" id="emptyState">
+        <div class="icon">🔑</div>
+        <div>No license keys found</div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Generate Keys Modal -->
+<div class="modal-overlay" id="genModal">
+  <div class="modal">
+    <h2>Generate License Keys</h2>
+    <label>Count</label>
+    <input type="number" id="genCount" value="1" min="1" max="100">
+    <label>Customer Name</label>
+    <input type="text" id="genCustomer" placeholder="e.g. John Doe">
+    <label>Email (optional)</label>
+    <input type="email" id="genEmail" placeholder="e.g. customer@example.com">
+    <label>Max Activations</label>
+    <input type="number" id="genMaxAct" value="1" min="1" max="10">
+    <label>Expires In (days, leave empty for never)</label>
+    <input type="number" id="genExpires" placeholder="e.g. 365" min="1">
+    <label>Notes</label>
+    <input type="text" id="genNotes" placeholder="e.g. Pro plan">
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeGenModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="doGenerate()">Generate</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generated Keys Modal -->
+<div class="modal-overlay" id="resultModal">
+  <div class="modal">
+    <h2>Generated Keys</h2>
+    <div id="resultKeys" style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent2);line-height:2;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="navigator.clipboard.writeText(document.getElementById('resultKeys').innerText); showToast('Copied to clipboard!', 'success');">Copy All</button>
+      <button class="btn btn-outline" onclick="document.getElementById('resultModal').classList.remove('active')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+let token = localStorage.getItem('shadowforge_admin_token');
+let currentPage = 1;
+
+if (token) {
+  document.getElementById('loginOverlay').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+  loadStats(); loadKeys();
+}
+
+async function api(method, path, body) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['x-admin-token'] = token;
+  const opts = { method, headers };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(path, opts);
+  const data = await r.json();
+  if (!r.ok || data.error) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+async function doLogin() {
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  const errEl = document.getElementById('loginError');
+  errEl.style.display = 'none';
+  try {
+    const data = await api('POST', '/api/admin/login', { username: u, password: p });
+    token = data.token;
+    localStorage.setItem('shadowforge_admin_token', token);
+    document.getElementById('loginOverlay').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    loadStats(); loadKeys();
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = 'block';
+  }
+}
+
+function doLogout() {
+  localStorage.removeItem('shadowforge_admin_token');
+  location.reload();
+}
+
+async function loadStats() {
+  try {
+    const d = await api('GET', '/api/admin/stats');
+    document.getElementById('statTotal').textContent = d.stats.totalKeys;
+    document.getElementById('statActive').textContent = d.stats.activeKeys;
+    document.getElementById('statActivations').textContent = d.stats.totalActivations;
+    document.getElementById('statBanned').textContent = d.stats.bannedKeys;
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function loadKeys(page = 1) {
+  currentPage = page;
+  const search = document.getElementById('searchInput').value.trim();
+  try {
+    const d = await api('GET', `/api/admin/keys?page=${page}&limit=20&search=${encodeURIComponent(search)}`);
+    const tbody = document.getElementById('keysTableBody');
+    const empty = document.getElementById('emptyState');
+
+    if (d.keys.length === 0) {
+      tbody.innerHTML = '';
+      empty.classList.remove('hidden');
+    } else {
+      empty.classList.add('hidden');
+      tbody.innerHTML = d.keys.map(k => {
+        let statusBadge = '';
+        if (k.is_banned) statusBadge = '<span class="badge badge-banned">Banned</span>';
+        else if (k.expires_at && new Date(k.expires_at) < new Date()) statusBadge = '<span class="badge badge-expired">Expired</span>';
+        else if (!k.is_active) statusBadge = '<span class="badge badge-inactive">Inactive</span>';
+        else statusBadge = '<span class="badge badge-active">Active</span>';
+
+        const ex = k.expires_at ? k.expires_at.split('T')[0] : 'Never';
+        const cr = k.created_at ? k.created_at.split('T')[0] : '-';
+        const activations = `${k.activation_count}/${k.max_activations}`;
+
+        let actions = '';
+        if (!k.is_banned) {
+          actions += `<button class="btn btn-outline btn-sm" style="margin-right:4px" onclick="toggleBan('${k.license_key}')" title="Ban">🚫</button>`;
+        } else {
+          actions += `<button class="btn btn-outline btn-sm" style="margin-right:4px" onclick="toggleBan('${k.license_key}')" title="Unban">✅</button>`;
+        }
+        actions += `<button class="btn btn-outline btn-sm" style="margin-right:4px" onclick="resetKey('${k.license_key}')" title="Reset HWID">🔄</button>`;
+        actions += `<button class="btn btn-danger btn-sm" onclick="deleteKey('${k.license_key}')" title="Delete">🗑</button>`;
+
+        return `<tr>
+          <td><span class="key-text">${k.license_key}</span></td>
+          <td>${k.customer_name || '-'}<br><small style="color:var(--text2)">${k.email || ''}</small></td>
+          <td>${statusBadge}</td>
+          <td>${activations}</td>
+          <td>${ex}</td>
+          <td>${cr}</td>
+          <td>${actions}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Pagination
+    const pag = document.getElementById('pagination');
+    if (d.totalPages <= 1) { pag.innerHTML = ''; return; }
+    let html = `<button ${d.page <= 1 ? 'disabled' : ''} onclick="loadKeys(${d.page-1})">‹ Prev</button>`;
+    for (let i = 1; i <= d.totalPages; i++) {
+      html += `<button class="${i === d.page ? 'active' : ''}" onclick="loadKeys(${i})">${i}</button>`;
+    }
+    html += `<button ${d.page >= d.totalPages ? 'disabled' : ''} onclick="loadKeys(${d.page+1})">Next ›</button>`;
+    pag.innerHTML = html;
+  } catch(e) {
+    if (e.message.includes('Unauthorized')) { doLogout(); return; }
+    showToast(e.message, 'error');
+  }
+}
+
+async function deleteKey(key) {
+  if (!confirm(`Delete key ${key}? This cannot be undone.`)) return;
+  try {
+    await api('DELETE', `/api/admin/keys/${key}`);
+    showToast('Key deleted', 'success');
+    loadKeys(currentPage); loadStats();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function toggleBan(key) {
+  try {
+    const d = await api('POST', `/api/admin/keys/${key}/toggle`);
+    showToast(d.is_banned ? 'Key banned' : 'Key unbanned', 'success');
+    loadKeys(currentPage); loadStats();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+async function resetKey(key) {
+  if (!confirm(`Reset HWID for key ${key}? This will allow reactivation on a new machine.`)) return;
+  try {
+    await api('POST', `/api/admin/keys/${key}/reset`);
+    showToast('HWID reset', 'success');
+    loadKeys(currentPage); loadStats();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function openGenModal() { document.getElementById('genModal').classList.add('active'); }
+function closeGenModal() { document.getElementById('genModal').classList.remove('active'); }
+
+async function doGenerate() {
+  const body = {
+    count: parseInt(document.getElementById('genCount').value) || 1,
+    customer_name: document.getElementById('genCustomer').value.trim() || null,
+    email: document.getElementById('genEmail').value.trim() || null,
+    max_activations: parseInt(document.getElementById('genMaxAct').value) || 1,
+    expires_days: parseInt(document.getElementById('genExpires').value) || null,
+    notes: document.getElementById('genNotes').value.trim() || null
+  };
+  try {
+    const d = await api('POST', '/api/admin/genkeys', body);
+    closeGenModal();
+    document.getElementById('resultKeys').innerText = d.keys.join('\n');
+    document.getElementById('resultModal').classList.add('active');
+    loadKeys(currentPage); loadStats();
+  } catch(e) { showToast(e.message, 'error'); }
+}
+
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast toast-${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>

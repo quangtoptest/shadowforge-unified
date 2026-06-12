@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ShadowForge Key Store - Mua license key VS Code Extension chính hãng từ MinhQuang">
+  <title>ShadowForge Key Store</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Particle Background -->
+  <canvas id="particles"></canvas>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="logo-container">
+        <div class="logo-icon">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logoGrad" x1="10" y1="10" x2="70" y2="70">
+                <stop offset="0%" stop-color="#ff6a00"/>
+                <stop offset="50%" stop-color="#ee0979"/>
+                <stop offset="100%" stop-color="#8a2be2"/>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <path d="M40 8 L52 20 L68 16 L64 32 L80 40 L64 48 L68 64 L52 60 L40 72 L28 60 L12 64 L16 48 L0 40 L16 32 L12 16 L28 20 Z" fill="url(#logoGrad)" filter="url(#glow)"/>
+            <text x="40" y="48" text-anchor="middle" fill="white" font-size="22" font-weight="900" font-family="Inter">SF</text>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>SHADOW<span class="gradient-text">FORGE</span></h1>
+          <p class="logo-subtitle">by MinhQuang</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span class="badge">🔐 Official Store</span>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-glow"></div>
+      <h2>Chọn gói phù hợp với bạn</h2>
+      <p>License Key chính hãng, kích hoạt nhanh, hỗ trợ 24/7</p>
+    </section>
+
+    <!-- PRODUCT CARDS -->
+    <section class="products" id="products">
+      
+      <div class="product-card basic" data-product="basic" onclick="selectProduct('basic')">
+        <div class="card-ribbon">Phổ biến nhất</div>
+        <div class="card-header">
+          <div class="card-icon">⚡</div>
+          <h3>Basic</h3>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li>✅ 1 máy kích hoạt</li>
+            <li>✅ Key vĩnh viễn</li>
+            <li>✅ Hỗ trợ cài đặt</li>
+            <li>✅ Cập nhật trọn đời</li>
+          </ul>
+          <div class="price">
+            <span class="amount">50.000</span>
+            <span class="currency">đ</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-select">Chọn gói</button>
+        </div>
+      </div>
+
+      <div class="product-card pro" data-product="pro" onclick="selectProduct('pro')">
+        <div class="card-ribbon ribbon-hot">Best Value</div>
+        <div class="card-header">
+          <div class="card-icon">🔥</div>
+          <h3>Pro</h3>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li>✅ 3 máy kích hoạt</li>
+            <li>✅ Key vĩnh viễn</li>
+            <li>✅ Hỗ trợ cài đặt</li>
+            <li>✅ Cập nhật trọn đời</li>
+            <li>✅ Ưu tiên hỗ trợ</li>
+          </ul>
+          <div class="price">
+            <span class="amount">120.000</span>
+            <span class="currency">đ</span>
+          </div>
+          <div class="savings">Tiết kiệm 30.000đ</div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-select">Chọn gói</button>
+        </div>
+      </div>
+
+      <div class="product-card ultimate" data-product="ultimate" onclick="selectProduct('ultimate')">
+        <div class="card-ribbon ribbon-crown">VIP</div>
+        <div class="card-header">
+          <div class="card-icon">👑</div>
+          <h3>Ultimate</h3>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li>✅ Không giới hạn máy</li>
+            <li>✅ Key vĩnh viễn</li>
+            <li>✅ Hỗ trợ cài đặt</li>
+            <li>✅ Cập nhật trọn đời</li>
+            <li>✅ Hỗ trợ VIP 24/7</li>
+            <li>✅ Custom branding</li>
+          </ul>
+          <div class="price">
+            <span class="amount">300.000</span>
+            <span class="currency">đ</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-select">Chọn gói</button>
+        </div>
+      </div>
+
+      <div class="product-card monthly" data-product="monthly" onclick="selectProduct('monthly')">
+        <div class="card-header">
+          <div class="card-icon">📅</div>
+          <h3>Monthly</h3>
+        </div>
+        <div class="card-body">
+          <ul class="feature-list">
+            <li>✅ 1 máy kích hoạt</li>
+            <li>✅ 30 ngày sử dụng</li>
+            <li>✅ Hỗ trợ cài đặt</li>
+            <li>✅ Gia hạn dễ dàng</li>
+          </ul>
+          <div class="price">
+            <span class="amount">25.000</span>
+            <span class="currency">đ</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn-select">Chọn gói</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAYMENT MODAL -->
+    <div class="modal-overlay" id="paymentModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="modalTitle">Xác nhận đơn hàng</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+          <!-- Dynamic content -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS MODAL -->
+    <div class="modal-overlay" id="successModal">
+      <div class="modal success-modal">
+        <div class="success-icon">🎉</div>
+        <h3>Tạo Key Thành Công!</h3>
+        <div class="key-display" id="keyDisplay"></div>
+        <p class="success-note">Key đã được gửi qua Telegram. Giữ key cẩn thận!</p>
+        <button class="btn-primary" onclick="closeSuccessModal()">Đóng</button>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <p>&copy; 2026 ShadowForge by MinhQuang. All rights reserved.</p>
+      <div class="footer-links">
+        <span>🔒 Bảo mật</span>
+        <span>📞 Hỗ trợ</span>
+        <span>📜 Điều khoản</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

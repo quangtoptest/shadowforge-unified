@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: shadowforge-unified
+    runtime: node
+    region: singapore
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: HOST
+        value: 0.0.0.0
+      - key: BOT_TOKEN
+        value: 8748609846:AAFS9n154QJZvvKIfW3zJlcdDo07OE16Z-o
+      - key: RENDER
+        value: "true"
+      - key: PUBLIC_URL
+        sync: false  # set manually after deploy
+      - key: KEEPALIVE_URL
+        sync: false  # set manually after deploy
+      - key: BANK_NAME
+        value: MB Bank
+      - key: BANK_ACC
+        sync: false  # set your real bank
+      - key: BANK_OWNER
+        value: NGUYEN MINH QUANG
+      - key: MOMO_NUM
+        sync: false  # set your real momo
+      - key: MOMO_NAME
+        value: NGUYEN MINH QUANG
